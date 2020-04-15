@@ -5,32 +5,28 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputScript library="js" name="jquery-3.4.1.slim.min.js" />
+        <h:outputScript library="js" name="bootstrap.js" />
     </h:head>
     <h:body>
-        <h:form>
-            <h:dataTable value="#{pwController.pwList}" var="pw">
-                <h:column>
-                    <f:facet name="header">Ezca Deposu ID</f:facet>
-                    #{pw.id}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ezca Deposu Adı</f:facet>
-                    #{pw.name}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ezca Deposu Borç</f:facet>
-                    #{pw.dept}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ezca Deposu Telefon Numarası</f:facet>
-                    #{pw.phone_number}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ezca Deposu Last Update</f:facet>
-                    #{pw.last_update}
-                </h:column>
-            </h:dataTable>
-        </h:form>
+        <div class="container">
+            <h:form>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <h:commandLink styleClass="navbar-brand" action="index" value="Eczane Otomasyonu" />
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <h:commandLink styleClass="nav-link" action="index" value="Anasayfa" />
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="pw" value="Ecza Deposu" />
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

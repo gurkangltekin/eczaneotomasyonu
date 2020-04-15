@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.Connection;
@@ -18,15 +13,15 @@ import entity.pw;
  * @author gurkangltekin
  */
 public class PwDAO {
-    
-    public List<pw> getPw(){
-        List<pw> pwList = new ArrayList();
         
         DBConnection db = new DBConnection();
         Connection c = db.connect();
         
+    public List<pw> getPw(){
+        List<pw> pwList = new ArrayList();
+        
         try{
-            Statement st = c.createStatement();
+            Statement st = this.getC().createStatement();
             ResultSet rs = st.executeQuery("select * from pharmaceutical_warehouse");
             
             while(rs.next()){
@@ -38,6 +33,51 @@ public class PwDAO {
         }
         
         return pwList;
+    }
+
+    public void insert(pw pw) {
+        
+        try{
+            Statement st = this.getC().createStatement();
+            st.executeUpdate("insert into pharmaceutical_warehouse (name, dept, phone_number) values('" + pw.getName() + "', " + pw.getDept() + ", " + pw.getPhone_number() + ")");
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void delete(pw pW) {
+        
+        try{
+            Statement st = this.getC().createStatement();
+            st.executeUpdate("delete from pharmaceutical_warehouse where id=" + pW.getId());
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void update(pw pW) {
+        
+        try{
+            Statement st = this.getC().createStatement();
+            st.executeUpdate("update pharmaceutical_warehouse set name = '" + pW.getName() + "', dept = " + pW.getDept() + ", phone_number = " + pW.getPhone_number() + " where id=" + pW.getId());
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public DBConnection getDb() {
+        if(this.db == null)
+            this.db = new DBConnection();
+        return db;
+    }
+
+    public Connection getC() {
+        if(this.c == null)
+            this.c = this.getDb().connect();
+        return c;
     }
     
 }
