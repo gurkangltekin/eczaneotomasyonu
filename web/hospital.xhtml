@@ -19,10 +19,10 @@
                             <li class="nav-item">
                                 <h:commandLink styleClass="nav-link" action="index" value="Anasayfa" />
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <h:commandLink styleClass="nav-link" action="pw" value="Ecza Deposu" />
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <h:commandLink styleClass="nav-link" action="hospital" value="Hospital" />
                             </li>
                         </ul>
@@ -33,33 +33,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
-                    <h:form id="pwTable">
-                        <h:dataTable styleClass="table table-striped" value="#{pwController.pwList}" var="pw">
+                    <h:form id="hospitalTable">
+                        <h:dataTable styleClass="table table-striped" value="#{hospitalController.hospitalList}" var="hospital">
                             <h:column>
-                                <f:facet name="header">Ezca Deposu ID</f:facet>
-                                    #{pw.id}
+                                <f:facet name="header">Hastane ID</f:facet>
+                                    #{hospital.id}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Ezca Deposu Adı</f:facet>
-                                <h:commandLink action="#{pwController.updateForm(pw)}" value="#{pw.name}">
-                                    <f:ajax execute="@this" render="pwForm" />
+                                <f:facet name="header">Hastane Adı</f:facet>
+                                <h:commandLink action="#{hospitalController.updateForm(hospital)}" value="#{hospital.name}">
+                                    <f:ajax execute="@this" render="hospitalForm" />
                                 </h:commandLink>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Ezca Deposu Borç</f:facet>
-                                    #{pw.dept}
+                                <f:facet name="header">Hastane Adresi</f:facet>
+                                    #{hospital.address}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Ezca Deposu Telefon Numarası</f:facet>
-                                    #{pw.phone_number}
+                                <f:facet name="header">Hastane Last Update</f:facet>
+                                    #{hospital.last_update}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Ezca Deposu Last Update</f:facet>
-                                    #{pw.last_update}
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Ezca Deposunu Sil</f:facet>
-                                <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{pwController.deleteConfirm(pw)}" value="Sil">
+                                <f:facet name="header">Hastaneyi Sil</f:facet>
+                                <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{hospitalController.deleteConfirm(hospital)}" value="Sil">
                                     <f:ajax execute="@this" render="delete-modal delete-button" />
                                 </h:commandButton>
                             </h:column>
@@ -67,25 +63,23 @@
                     </h:form>
                 </div>
                 <div class="col-md-3">
-                    <h:form id="pwForm">
+                    <h:form id="hospitalForm">
                         <div class="form-group">
-                            <h:inputHidden value="#{pwController.pw.id}" />
-                            <label for="inputName">Ecza Deposu Adı</label>
-                            <h:inputText styleClass="form-control" value="#{pwController.pw.name}" />
-                            <label for="inputName">Ecza Deposu Borç Bilgisi</label>
-                            <h:inputText styleClass="form-control" value="#{pwController.pw.dept}" />
-                            <label for="inputName">Ecza Deposu Telefon Numarası</label>
-                            <h:inputText styleClass="form-control" value="#{pwController.pw.phone_number}" />
+                            <h:inputHidden value="#{hospitalController.hospital.id}" />
+                            <label for="inputName">Hastane Adı</label>
+                            <h:inputText id="inputName" styleClass="form-control" value="#{hospitalController.hospital.name}" />
+                            <label for="inputAddress">Hastane Adresi</label>
+                            <h:inputText id="inputAddress" styleClass="form-control" value="#{hospitalController.hospital.address}" />
                         </div>
                         <div class="form-group btn-group">
-                            <h:commandButton rendered="#{pwController.pw.id != 0}" styleClass="btn btn-secondary" value="Güncelle" action="#{pwController.update}">
-                                <f:ajax execute="pwForm" render="pwForm pwTable" />
+                            <h:commandButton rendered="#{hospitalController.hospital.id != 0}" styleClass="btn btn-secondary" value="Güncelle" action="#{hospitalController.update}">
+                                <f:ajax execute="hospitalForm" render="hospitalForm hospitalTable" />
                             </h:commandButton>
-                            <h:commandButton rendered="#{pwController.pw.id != 0}" styleClass="btn btn-info" value="Form Temizle" action="#{pwController.clearForm}">
-                                <f:ajax execute="@this" render="pwForm" />
+                            <h:commandButton rendered="#{hospitalController.hospital.id != 0}" styleClass="btn btn-info" value="Form Temizle" action="#{hospitalController.clearForm}">
+                                <f:ajax execute="@this" render="hospitalForm" />
                             </h:commandButton>
-                            <h:commandButton rendered="#{pwController.pw.id == 0}"  styleClass="btn btn-primary" value="Oluştur" action="#{pwController.create}">
-                                <f:ajax execute="pwForm" render="pwForm pwTable" />
+                            <h:commandButton rendered="#{hospitalController.hospital.id == 0}"  styleClass="btn btn-primary" value="Oluştur" action="#{hospitalController.create}">
+                                <f:ajax execute="hospitalForm" render="hospitalForm hospitalTable" />
                             </h:commandButton>
                         </div>
                     </h:form>
@@ -102,20 +96,19 @@
                         </div>
                         <div class="modal-body">
                             <p>
-                                <b>Ecza Deposu ID : </b>#{pwController.pw.id} <br/>
-                                <b>Ecza Deposu Adı : </b>#{pwController.pw.name} <br/>
-                                <b>Ecza Deposu Borç Bilgisi : </b>#{pwController.pw.dept}<br/>
-                                <b>Ecza Deposu Telefon Numarası : </b>#{pwController.pw.phone_number} <br/>
-                                <b>Ecza Deposu Bilgi Güncellenme Zamanı : </b>#{pwController.pw.last_update} <br/>
-                                silmek istediğinizden emin misiniz?
+                                <b>Hastane ID : </b>#{hospitalController.hospital.id} <br/>
+                                <b>Hastane Adı : </b>#{hospitalController.hospital.name} <br/>
+                                <b>Hastane Adresi : </b>#{hospitalController.hospital.address}<br/>
+                                <b>Hastane Bilgi Güncellenme Zamanı : </b>#{hospitalController.hospital.last_update} <br/>
+                                Bilgilerini silmek istediğinizden emin misiniz?
                             </p>
                         </div>
                         <div class="modal-footer">
                             <h:form id="delete-button">
-                                <h:commandLink onclick="$('.modal').modal('hide')" value="Sil" action="#{pwController.delete}" styleClass="btn btn-danger">
-                                    <f:ajax execute="@this" render="pwTable pwForm" />
+                                <h:commandLink onclick="$('.modal').modal('hide')" value="Sil" action="#{hospitalController.delete}" styleClass="btn btn-danger">
+                                    <f:ajax execute="@this" render="hospitalTable hospitalForm" />
                                 </h:commandLink>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                             </h:form>
                         </div>
                     </h:panelGroup>
