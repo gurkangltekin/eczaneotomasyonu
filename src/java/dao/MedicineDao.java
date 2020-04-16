@@ -1,64 +1,68 @@
 package dao;
 
-import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import util.DBConnection;
 import entity.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
  * @author gurkangltekin
  */
-public class HospitalDao {
+public class MedicineDao {
         
         DBConnection db = new DBConnection();
         Connection c = db.connect();
         
-    public List<hospital> getHospital(){
-        List<hospital> hospitalList = new ArrayList();
+    public List<medicine> getMedicine(){
+        List<medicine> medicineList = new ArrayList();
         
         try{
             Statement st = this.getC().createStatement();
-            ResultSet rs = st.executeQuery("select * from hospital");
+            ResultSet rs = st.executeQuery("select * from medicine");
             
             while(rs.next()){
-                hospital tmp = new hospital(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getDate("last_update"));
-                hospitalList.add(tmp);
+                medicine tmp = new medicine(rs.getInt("id"), rs.getString("name"), rs.getDate("exd"), rs.getInt("stock"), rs.getDate("last_update"));
+                medicineList.add(tmp);
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
         
-        return hospitalList;
+        return medicineList;
     }
 
-    public void insert(hospital hospital) {
+    public void insert(medicine medicine) {
         
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("insert into hospital (name, address) values('" + hospital.getName() + "', '" + hospital.getAddress() +"')");
+            st.executeUpdate("insert into medicine (name, exd, stock) values('" + medicine.getName() + "', '" + medicine.getExd() +"', " + medicine.getStock() + ")");
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
 
-    public void delete(hospital hospital) {
+    public void delete(medicine medicine) {
         
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("delete from hospital where id=" + hospital.getId());
+            st.executeUpdate("delete from medicine where id=" + medicine.getId());
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
 
-    public void update(hospital hospital) {
+    public void update(medicine medicine) {
         
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("update hospital set name = '" + hospital.getName() + "', address = '" + hospital.getAddress()+ "' where id=" + hospital.getId());
+            st.executeUpdate("update medicine set name = '" + medicine.getName() + "', exd = '" + medicine.getExd()+ "', stock = " + medicine.getStock() + " where id=" + medicine.getId());
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
