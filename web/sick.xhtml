@@ -25,10 +25,10 @@
                             <li class="nav-item">
                                 <h:commandLink styleClass="nav-link" action="hospital" value="Hastane" />
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <h:commandLink styleClass="nav-link" action="medicine" value="İlaçlar" />
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <h:commandLink styleClass="nav-link" action="sick" value="Hasta" />
                             </li>
                         </ul>
@@ -39,33 +39,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
-                    <h:form id="medicineTable">
-                        <h:dataTable styleClass="table table-striped" value="#{medicineController.medicineList}" var="medicine">
+                    <h:form id="sickTable">
+                        <h:dataTable styleClass="table table-striped" value="#{sickController.sickList}" var="sick">
                             <h:column>
-                                <f:facet name="header">İlaç ID</f:facet>
-                                    #{medicine.id}
+                                <f:facet name="header">Hasta ID</f:facet>
+                                    #{sick.id}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">İlaç Adı</f:facet>
-                                <h:commandLink action="#{medicineController.updateForm(medicine)}" value="#{medicine.name}">
-                                    <f:ajax execute="@this" render="medicineForm" />
+                                <f:facet name="header">Hasta Adı</f:facet>
+                                <h:commandLink action="#{sickController.updateForm(sick)}" value="#{sick.name}">
+                                    <f:ajax execute="@this" render="sickForm" />
                                 </h:commandLink>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">İlaç Son Kullanım Tarihi</f:facet>
-                                #{medicine.exd}
+                                <f:facet name="header">Hasta Soyadı</f:facet>
+                                    #{sick.surname}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">İlaç Stok Durumu</f:facet>
-                                    #{medicine.stock}
+                                <f:facet name="header">Hasta Last Update</f:facet>
+                                    #{sick.last_update}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">İlaç Last Update</f:facet>
-                                    #{medicine.last_update}
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">İlacı Sil</f:facet>
-                                <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{medicineController.deleteConfirm(medicine)}" value="Sil">
+                                <f:facet name="header">Hastayı Sil</f:facet>
+                                <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{sickController.deleteConfirm(sick)}" value="Sil">
                                     <f:ajax execute="@this" render="delete-modal delete-button" />
                                 </h:commandButton>
                             </h:column>
@@ -73,29 +69,23 @@
                     </h:form>
                 </div>
                 <div class="col-md-3">
-                    <h:form id="medicineForm">
+                    <h:form id="sickForm">
                         <div class="form-group">
-                            <h:inputHidden value="#{medicineController.medicine.id}" />
-                            <label for="inputName">İlaç Adı</label>
-                            <h:inputText id="inputName" styleClass="form-control" value="#{medicineController.medicine.name}" />
-                            <label for="inputExd">İlaç Son Kullanım Tarihi</label>
-                            <h:panelGrid>
-                            <h:inputText id="inputExd" styleClass="form-control" value="#{medicineController.medicine.exd}">
-                                <f:convertDateTime pattern="dd-M-yyyy" />
-                            </h:inputText>
-                                </h:panelGrid>
-                            <label for="inputStock">İlaç Stok Durumu</label>
-                            <h:inputText id="inputStock" styleClass="form-control" value="#{medicineController.medicine.stock}" />
+                            <h:inputHidden value="#{sickController.sick.id}" />
+                            <label for="inputName">Hasta Adı</label>
+                            <h:inputText id="inputName" styleClass="form-control" value="#{sickController.sick.name}" />
+                            <label for="inputSurname">Hasta Soyadı</label>
+                            <h:inputText id="inputSurname" styleClass="form-control" value="#{sickController.sick.surname}" />
                         </div>
                         <div class="form-group btn-group">
-                            <h:commandButton rendered="#{medicineController.medicine.id != 0}" styleClass="btn btn-secondary" value="Güncelle" action="#{medicineController.update}">
-                                <f:ajax execute="medicineForm" render="medicineForm medicineTable" />
+                            <h:commandButton rendered="#{sickController.sick.id != 0}" styleClass="btn btn-secondary" value="Güncelle" action="#{sickController.update}">
+                                <f:ajax execute="sickForm" render="sickForm sickTable" />
                             </h:commandButton>
-                            <h:commandButton rendered="#{medicineController.medicine.id != 0}" styleClass="btn btn-info" value="Form Temizle" action="#{medicineController.clearForm}">
-                                <f:ajax execute="@this" render="medicineForm" />
+                            <h:commandButton rendered="#{sickController.sick.id != 0}" styleClass="btn btn-info" value="Form Temizle" action="#{sickController.clearForm}">
+                                <f:ajax execute="@this" render="sickForm" />
                             </h:commandButton>
-                            <h:commandButton rendered="#{medicineController.medicine.id == 0}"  styleClass="btn btn-primary" value="Oluştur" action="#{medicineController.create}">
-                                <f:ajax execute="medicineForm" render="medicineForm medicineTable" />
+                            <h:commandButton rendered="#{sickController.sick.id == 0}"  styleClass="btn btn-primary" value="Oluştur" action="#{sickController.create}">
+                                <f:ajax execute="sickForm" render="sickForm sickTable" />
                             </h:commandButton>
                         </div>
                     </h:form>
@@ -112,18 +102,17 @@
                         </div>
                         <div class="modal-body">
                             <p>
-                                <b>İlaç ID : </b>#{medicineController.medicine.id} <br/>
-                                <b>İlaç Adı : </b>#{medicineController.medicine.name} <br/>
-                                <b>İlaç Son Kullanım Tarihi : </b>#{medicineController.medicine.exd}<br/>
-                                <b>İlaç Stok Durumu : </b>#{medicineController.medicine.stock}<br/>
-                                <b>İlaç Bilgi Güncellenme Zamanı : </b>#{medicineController.medicine.last_update} <br/>
+                                <b>Hasta ID : </b>#{sickController.sick.id} <br/>
+                                <b>Hasta Adı : </b>#{sickController.sick.name} <br/>
+                                <b>Hasta Soyadı : </b>#{sickController.sick.surname}<br/>
+                                <b>Hasta Bilgi Güncellenme Zamanı : </b>#{sickController.sick.last_update} <br/>
                                 Bilgilerini silmek istediğinizden emin misiniz?
                             </p>
                         </div>
                         <div class="modal-footer">
                             <h:form id="delete-button">
-                                <h:commandLink onclick="$('.modal').modal('hide')" value="Sil" action="#{medicineController.delete}" styleClass="btn btn-danger">
-                                    <f:ajax execute="@this" render="medicineTable medicineForm" />
+                                <h:commandLink onclick="$('.modal').modal('hide')" value="Sil" action="#{sickController.delete}" styleClass="btn btn-danger">
+                                    <f:ajax execute="@this" render="sickTable sickForm" />
                                 </h:commandLink>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                             </h:form>
