@@ -4,8 +4,11 @@ package entity;
 import java.sql.Date;
 
 /**
- *
  * @author gurkangltekin
+ * 
+ * bu sinifimiz veritabanimizdaki ecza deposu tablomuzun java tarafindan nesnelestirilmis
+ * halini temsil etmekte...
+ * 
  */
 public class pw {
     private int id;

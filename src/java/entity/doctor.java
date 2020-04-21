@@ -11,24 +11,26 @@ import java.util.List;
 /**
  * @author gurkangltekin
  * 
- * bu sinifimiz veritabanimizdaki hasta tablomuzun java tarafindan nesnelestirilmis
+ * bu sinifimiz veritabanimizdaki doktor tablomuzun java tarafindan nesnelestirilmis
  * halini temsil etmekte...
  * 
  */
-public class sick {
+public class doctor {
     private int id;
     private String name;
     private String surname;
-    private List<medicine> medicines;
+    private String branch;
+    private hospital hospital;
     private Date last_update;
 
-    public sick() {
+    public doctor() {
     }
 
-    public sick(int id, String name, String surname, Date last_update) {
+    public doctor(int id, String name, String surname,String branch, Date last_update) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.branch = branch;
         this.last_update = last_update;
     }
 
@@ -56,12 +58,20 @@ public class sick {
         this.surname = surname;
     }
 
-    public List<medicine> getMedicines() {
-        return medicines;
+    public String getBranch() {
+        return branch;
     }
 
-    public void setMedicines(List<medicine> medicines) {
-        this.medicines = medicines;
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public hospital getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(hospital hospital) {
+        this.hospital = hospital;
     }
 
     public Date getLast_update() {
@@ -70,6 +80,11 @@ public class sick {
 
     public void setLast_update(Date last_update) {
         this.last_update = last_update;
+    }
+
+    @Override
+    public String toString() {
+        return "doctor{" + "id=" + id + ", name=" + name + ", surname=" + surname + ", branch=" + branch + ", hospital=" + hospital.getName() + ", last_update=" + last_update + '}';
     }
     
     

@@ -8,8 +8,11 @@ package entity;
 import java.util.Date;
 
 /**
- *
  * @author gurkangltekin
+ * 
+ * bu sinifimiz veritabanimizdaki ilac tablomuzun java tarafindan nesnelestirilmis
+ * halini temsil etmekte...
+ * 
  */
 public class medicine {
     

@@ -9,9 +9,14 @@ import java.sql.SQLException;
 /**
  *
  * @author gurkangltekin
+ * 
+ * Bu sinifimda veritabanina baglanabilmek icin gerekli implementasyonlari
+ * gerceklestirdik, sunucu kullanici adi ve sifre bilgilerini veritabani kutuphanelerini 
+ * projemize dahil ettik.
  */
 public class DBConnection {
     
+    //veritabanı sunucumuza baglanma islemlerini gerceklestiriyoruz.
     public Connection connect(){
         Connection c = null;
         

@@ -3,8 +3,11 @@ package entity;
 import java.sql.Date;
 
 /**
- *
  * @author gurkangltekin
+ * 
+ * bu sinifimiz veritabanimizdaki hastane tablomuzun java tarafindan nesnelestirilmis
+ * halini temsil etmekte...
+ * 
  */
 public class hospital {
     private int id;
