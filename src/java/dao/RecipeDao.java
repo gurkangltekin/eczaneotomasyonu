@@ -11,39 +11,40 @@ import entity.*;
  * Bu Sinifimiz, java tarafindan olusturdugumuz hasta tablomuzun nesnelestirilmis
  * haline veritabanındaki bilgileri eklememizde yardimci olacak.
  */
-public class SickDao extends dao{
+public class RecipeDao extends dao{
     
     /*ilacdao sinifimizin nesnesinin hasta sinifinda olmasinin sebebi, her hastanin
     aldigi ilaclarin bilgisini hasta içerisinde barindirabilmek icin ilacdao 
     sinifini hastadao sinifimiza entegre etme ihtiyaci doguyor.*/
     private MedicineDao mDao;
     
-    public sick find(int id){
-        sick s = null;
-        
-        return s;
-    }
+    private SickDao sDao;
+    private DoctorDao dDao;
         
     /*bu metodumuz veritabanındaki hasta tablomuzdas bulunan tum satirlari
     *burada liste haline getirerek somutlastirma islemini gerceklestiriyoruz
     */
-    public List<sick> getSick(){
-        List<sick> sickList = new ArrayList();
+    public List<recipe> getRecipe(){
+        List<recipe> recipeList = new ArrayList();
         
         try{
             Statement st = this.getC().createStatement();
-            ResultSet rs = st.executeQuery("select * from sick");
+            ResultSet rs = st.executeQuery("select * from recipe");
             
             while(rs.next()){
-                sick tmp = new sick(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getDate("last_update"));
-                tmp.setMedicines(this.getmDao().getSickMedicines(rs.getInt("id")));
-                sickList.add(tmp);
+                recipe tmp = new recipe();
+                tmp.setDate(rs.getDate("date"));
+                tmp.setDiagnosis(rs.getString("diagnosis"));
+                tmp.setSick(this.getsDao().find(rs.getInt("sick_id")));
+                tmp.setDoctor(this.getdDao().find(rs.getInt("doctor_id")));
+                tmp.setMedicines(this.getmDao().getRecipeMedicines(rs.getInt("id")));
+                recipeList.add(tmp);
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
         
-        return sickList;
+        return recipeList;
     }
 
     /*Bu metodumuz hasta tablosuna yeni ilac bilgilerinin girislerini
@@ -51,10 +52,12 @@ public class SickDao extends dao{
     */
     @Override
     public void insert(Object obj, int selectedHospital) {
-        sick sick = (sick)obj;
+        recipe recipe = (recipe)obj;
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("insert into sick (name, surname) values('" + sick.getName() + "', '" + sick.getSurname()+"')");
+            st.executeUpdate("insert into recipe (date, diagnosis, sick_id, doctor_id) values('" 
+                    + recipe.getDate()+ "', '" + recipe.getDiagnosis() + "', " 
+                    + recipe.getSick().getId() + ", " + recipe.getDoctor().getId() + ")");
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -65,10 +68,10 @@ public class SickDao extends dao{
     bulunmasini gerektirmeyecek hasta bilgilerini silmemize yariyor.*/
     @Override
     public void delete(Object obj) {
-        sick sick = (sick)obj;
+        recipe recipe = (recipe)obj;
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("delete from sick where id=" + sick.getId());
+            st.executeUpdate("delete from recipe where id=" + recipe.getId());
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -79,29 +82,13 @@ public class SickDao extends dao{
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
     @Override
     public void update(Object obj, int selected) {
-        sick sick = (sick)obj;
+        recipe recipe = (recipe)obj;
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("update sick set name = '" + sick.getName() + "', surname = '" + sick.getSurname()+ "' where id=" + sick.getId());
-            
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /*bu metodumuz, eczane tarafindan bir hastaya satilan ilaclarin hasta_ilac 
-    tablosuna veri girisinin yapilmasini, kayit altina alinmasini 
-    gerceklestiriliyor. her hastanin aldigi her ilaci bu metod uzerinden veri 
-    tabanina kaydediyoruz.*/
-    public void sell(int selectedSick, List<Integer> selectedMedicines) {
-        try{
-            Statement st = this.getC().createStatement();
-            
-            int size = selectedMedicines.size();
-            
-            for(int i = 0 ; i < size ; i++){
-                st.executeUpdate("insert into sick_medicine (sick, medicine_id) values (" + selectedSick + ", " + selectedMedicines.get(i) + ")");
-            }
+            st.executeUpdate("update recipe set date = '" + recipe.getDate() 
+                    + "', diagnosis = '" + recipe.getDiagnosis()+ "', sick_id = " 
+                    + recipe.getSick().getId() + ", doctor_id" + recipe.getDoctor().getId() 
+                    + " where id=" + recipe.getId());
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -113,6 +100,18 @@ public class SickDao extends dao{
         if(this.mDao == null)
             this.mDao = new MedicineDao();
         return mDao;
+    }
+
+    public SickDao getsDao() {
+        if(this.sDao == null)
+            this.sDao = new SickDao();
+        return sDao;
+    }
+
+    public DoctorDao getdDao() {
+        if(this.dDao == null)
+            this.dDao = new DoctorDao();
+        return dDao;
     }
     
 }

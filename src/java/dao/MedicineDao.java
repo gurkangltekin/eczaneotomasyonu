@@ -1,9 +1,7 @@
 package dao;
 
 import java.util.*;
-import util.DBConnection;
 import entity.*;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,12 +13,7 @@ import java.sql.Statement;
  * Bu Sinifimiz, java tarafindan olusturdugumuz ilac tablomuzun nesnelestirilmis
  * haline veritabanındaki bilgileri eklememizde yardimci olacak.
  */
-public class MedicineDao {
-    
-    /*dbconnection sinifi, bizim tarafimizdan olusturulan veritabani ile haberlesmemizi saglayan, 
-    veritabani serverimiza baglanmamizi saglayacak bilgilerin bulundugu siniftir.*/
-    DBConnection db = new DBConnection();
-    Connection c = db.connect();
+public class MedicineDao extends dao{
         
         
     public List<medicine> getRecipeMedicines(int recipeId){
@@ -106,8 +99,9 @@ public class MedicineDao {
     /*Bu metodumuz ilac tablosuna yeni ilac bilgilerinin girislerini
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
-    public void insert(medicine medicine) {
-        
+    @Override
+    public void insert(Object obj, int selected) {
+        medicine medicine = (medicine)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("insert into medicine (name, exd, stock) values('" + medicine.getName() + "', '" + medicine.getExd() +"', " + medicine.getStock() + ")");
@@ -119,8 +113,9 @@ public class MedicineDao {
 
     /*Bu metodumuz ilac tablomuzda yanlis girilen veya artik veritabanimizda
     bulunmasini gerektirmeyecek ilac bilgilerini silmemize yariyor.*/
-    public void delete(medicine medicine) {
-        
+    @Override
+    public void delete(Object obj) {
+        medicine medicine = (medicine)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("delete from medicine where id=" + medicine.getId());
@@ -132,8 +127,9 @@ public class MedicineDao {
 
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir ilac
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
-    public void update(medicine medicine) {
-        
+    @Override
+    public void update(Object obj, int selected) {
+        medicine medicine = (medicine)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("update medicine set name = '" + medicine.getName() + "', exd = '" + medicine.getExd()+ "', stock = " + medicine.getStock() + " where id=" + medicine.getId());
@@ -142,19 +138,4 @@ public class MedicineDao {
             System.out.println(e.getMessage());
         }
     }
-
-    public DBConnection getDb() {
-        //nesnemizin null gelme olasiligini ortadan kaldirmak amaciyla kontrol gerceklestiriyoruz
-        if(this.db == null)
-            this.db = new DBConnection();
-        return db;
-    }
-
-    public Connection getC() {
-        //nesnemizin null gelme olasiligini ortadan kaldirmak amaciyla kontrol gerceklestiriyoruz
-        if(this.c == null)
-            this.c = this.getDb().connect();
-        return c;
-    }
-    
 }

@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Hasta</title>
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputScript library="js" name="jquery-3.4.1.slim.min.js" />
+        <h:outputScript library="js" name="bootstrap.js" />
+    </h:head>
+    <h:body>
+        <!-- navbar -->
+        <div class="container">
+            <h:form>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <h:commandLink styleClass="navbar-brand" action="index" value="Eczane Otomasyonu" />
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="index" value="Anasayfa" />
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="pw" value="Ecza Deposu" />
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="hospital" value="Hastane" />
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="medicine" value="İlaçlar" />
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="sick" value="Hasta" />
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink styleClass="nav-link" action="doctor" value="Doktor" />
+                            </li>
+                            <li class="nav-item active">
+                                <h:commandLink styleClass="nav-link" action="recipe" value="Reçete" />
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </h:form>
+        </div>
+        <!-- end navbar -->
+
+        <!-- Recipe Table-Form -->
+        <div class="container">
+            <div class="row">
+                <!-- Recipe Table -->
+                <div class="col-md-9">
+                    <h:form id="recipeTable">
+                        <h:dataTable styleClass="table table-striped" value="#{recipeController.recipeList}" var="recipe">
+                            <h:column>
+                                <f:facet name="header">Reçete ID</f:facet>
+                                <h:commandLink action="#{recipeController.updateForm(recipe)}" value="#{recipe.id}">
+                                    <f:ajax execute="@this" render="recipeForm" />
+                                </h:commandLink>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Reçete Tarihi</f:facet>
+                                #{recipe.date}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Reçete Teşhisi</f:facet>
+                                    #{recipe.diagnosis}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Hasta Adı Soyadı</f:facet>
+                                    #{recipe.sick.name} #{recipe.sick.surname}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Doktor Adı Soyadı</f:facet>
+                                    #{recipe.doctor.name} #{recipe.doctor.surname}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Reçete İlaçları</f:facet>
+                                <ul>
+                                    <ui:repeat value="#{recipe.medicines}" var="medicines">
+                                        <li></li>
+                                    </ui:repeat>
+                                </ul>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Reçete Last Update</f:facet>
+                                    #{recipe.last_update}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Hastayı Sil</f:facet>
+                                <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{recipeController.deleteConfirm(recipe)}" value="Sil">
+                                    <f:ajax execute="@this" render="delete-modal delete-button" />
+                                </h:commandButton>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+                <!-- end Recipe Table -->
+
+                <!-- Recipe Form -->
+                <div class="col-md-3">
+                    <h:form id="recipeForm">
+                        <div class="form-group">
+                            <h:inputHidden value="#{recipeController.recipe.id}" />
+                            <label for="inputDate">Reçete Tarhisi</label>
+                            <h:panelGrid>
+                                <h:inputText id="inputDate" styleClass="form-control" value="#{recipeController.recipe.date}">
+                                    <f:convertDateTime pattern="dd-M-yyyy" />
+                                </h:inputText>
+                            </h:panelGrid>
+                            <label for="inputDiagnosis">Reçete Teşhisi</label>
+                            <h:inputText id="inputDiagnosis" styleClass="form-control" value="#{recipeController.recipe.diagnosis}" />
+                            <label for="selectSick">Hasta</label>
+                            <h:selectOneMenu styleClass="custom-select" id="selectSick" value="#{recipeController.selectedItem1}">
+                                <f:selectItems value="#{recipeController.sickList}" var="sick" itemValue="#{sick.id}" itemLabel="#{sick.name} #{sick.surname}"/>
+                            </h:selectOneMenu>
+                            <label for="selectDoctor">Doktor</label>
+                            <h:selectOneMenu styleClass="custom-select" id="selectDoctor" value="#{recipeController.selectedItem2}">
+                                <f:selectItems value="#{recipeController.doctorList}" var="doctor" itemValue="#{doctor.id}" itemLabel="#{doctor.name} #{doctor.surname}"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="form-group btn-group">
+                            <h:commandButton rendered="#{recipeController.recipe.id != 0}" styleClass="btn btn-secondary" value="Güncelle" action="#{recipeController.update}">
+                                <f:ajax execute="recipeForm" render="recipeForm recipeTable" />
+                            </h:commandButton>
+                            <h:commandButton rendered="#{recipeController.recipe.id != 0}" styleClass="btn btn-info" value="Form Temizle" action="#{recipeController.clearForm}">
+                                <f:ajax execute="@this" render="recipeForm" />
+                            </h:commandButton>
+                            <h:commandButton rendered="#{recipeController.recipe.id == 0}"  styleClass="btn btn-primary" value="Oluştur" action="#{recipeController.create}">
+                                <f:ajax execute="recipeForm" render="recipeForm recipeTable" />
+                            </h:commandButton>
+                        </div>
+                    </h:form>
+                </div>
+                <!-- end Recipe Form -->
+            </div>
+            <!-- end Recipe Table-Form -->
+
+            <!-- Delete Confirm Modal -->
+            <div class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:panelGroup layout="block" class="modal-content" id="delete-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Silme Onay Kutusu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                <b>Reçete ID : </b>#{recipeController.recipe.id} <br/>
+                                <b>Reçete Tarihi : </b>#{recipeController.recipe.date} <br/>
+                                <b>Reçete Teşhisi : </b>#{recipeController.recipe.sick}<br/>
+                                <b>Hasta Adı Soyadı : </b>#{recipeController.recipe.sick.name} #{recipeController.recipe.sick.surname}<br/>
+                                <b>Doktor Adı Soyadı Soyadı : </b>#{recipeController.recipe.doctor.name} #{recipeController.recipe.doctor.surname}<br/>
+                                <b>Reçete Bilgi Güncellenme Zamanı : </b>#{recipeController.recipe.last_update} <br/>
+                                Bilgilerini silmek istediğinizden emin misiniz?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <h:form id="delete-button">
+                                <h:commandLink onclick="$('.modal').modal('hide')" value="Sil" action="#{recipeController.delete}" styleClass="btn btn-danger">
+                                    <f:ajax execute="@this" render="recipeTable recipeForm" />
+                                </h:commandLink>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                            </h:form>
+                        </div>
+                    </h:panelGroup>
+                </div>
+            </div>
+            <!-- end Delete Confirm Modal -->
+        </div>
+    </h:body>
+</html>
+

@@ -107,8 +107,8 @@
                         </div>
                         <div class="form-group">
                             <label for="selectSick">Doktorun Çalıştığı Hastane</label>
-                            <h:selectOneMenu styleClass="custom-select" id="selectHospital" value="#{doctorController.selectedHospital}">
-                                <f:selectItems value="#{hospitalController.hospitalList}" var="hospital" itemValue="#{hospital.id}" itemLabel="#{hospital.name}"/>
+                            <h:selectOneMenu styleClass="custom-select" id="selectHospital" value="#{doctorController.selectedItem1}">
+                                <f:selectItems value="#{doctorController.hospitalList}" var="hospital" itemValue="#{hospital.id}" itemLabel="#{hospital.name}"/>
                             </h:selectOneMenu>
                         </div>
 

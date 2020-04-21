@@ -6,7 +6,6 @@
 package entity;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author gurkangltekin
@@ -81,11 +80,4 @@ public class doctor {
     public void setLast_update(Date last_update) {
         this.last_update = last_update;
     }
-
-    @Override
-    public String toString() {
-        return "doctor{" + "id=" + id + ", name=" + name + ", surname=" + surname + ", branch=" + branch + ", hospital=" + hospital.getName() + ", last_update=" + last_update + '}';
-    }
-    
-    
 }

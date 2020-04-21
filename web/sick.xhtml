@@ -108,7 +108,7 @@
                                 <f:ajax execute="@this" render="sickForm" />
                             </h:commandButton>
                             <h:commandButton rendered="#{sickController.sick.id == 0}"  styleClass="btn btn-primary" value="Oluştur" action="#{sickController.create}">
-                                <f:ajax execute="sickForm" render="sickForm sickTable medicineSell" />
+                                <f:ajax execute="sickForm" render="sickForm sickTable medicineSell selectSick" />
                             </h:commandButton>
                         </div>
                     </h:form>
@@ -125,14 +125,14 @@
                         <h:form id="medicineSell">
                             <div class="form-group">
                                 <label for="selectSick">Hasta</label>
-                                <h:selectOneMenu styleClass="custom-select" id="selectSick" value="#{sickController.selectedSick}">
+                                <h:selectOneMenu styleClass="custom-select" id="selectSick" value="#{sickController.selectedItem1}">
                                     <f:selectItems value="#{sickController.sickList}" var="sick" itemValue="#{sick.id}" itemLabel="#{sick.name} #{sick.surname}"/>
                                 </h:selectOneMenu>
                             </div>
                             <div class="form-group">
                                 <label for="selectMedicine">İlaçlar</label>
-                                <h:selectManyMenu styleClass="custom-select" id="selectMedicine" value="#{sickController.selectedMedicines}">
-                                    <f:selectItems value="#{sickController.medicineController.medicineList}" var="medicine" itemValue="#{medicine.id}" itemLabel="#{medicine.id} #{medicine.name}"/>
+                                <h:selectManyMenu styleClass="custom-select" id="selectMedicine" style="height: 150px;" value="#{sickController.selectedMedicines}">
+                                    <f:selectItems value="#{sickController.medicineList}" var="medicine" itemValue="#{medicine.id}" itemLabel="#{medicine.name}"/>
                                 </h:selectManyMenu>
                             </div>
                             <div class="form-group">

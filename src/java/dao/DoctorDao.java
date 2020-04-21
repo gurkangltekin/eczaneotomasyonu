@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.*;
 import java.util.*;
-import util.DBConnection;
 import entity.*;
 
 /**
@@ -12,12 +11,7 @@ import entity.*;
  * Bu Sinifimiz, java tarafindan olusturdugumuz doktor tablomuzun nesnelestirilmis
  * haline veritabanındaki bilgileri eklememizde yardimci olacak.
  */
-public class DoctorDao {
-        
-    /*dbconnection sinifi, bizim tarafimizdan olusturulan veritabani ile haberlesmemizi saglayan, 
-    veritabani serverimiza baglanmamizi saglayacak bilgilerin bulundugu siniftir.*/
-    DBConnection db = new DBConnection();
-    Connection c = db.connect();
+public class DoctorDao extends dao{
     
     HospitalDao hDao = new HospitalDao();
     
@@ -64,8 +58,9 @@ public class DoctorDao {
     /*Bu metodumuz hasta tablosuna yeni ilac bilgilerinin girislerini
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
-    public void insert(doctor doctor, int selectedHospital) {
-        
+    @Override
+    public void insert(Object obj, int selectedHospital) {
+        doctor doctor = (doctor)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("insert into doctor (name, surname, branch, hospital) values('" + doctor.getName() + "', '" + doctor.getSurname()+"', '" + doctor.getBranch() + "', " + selectedHospital + ")");
@@ -77,8 +72,9 @@ public class DoctorDao {
 
     /*Bu metodumuz hasta tablomuzda yanlis girilen veya artik veritabanimizda
     bulunmasini gerektirmeyecek hasta bilgilerini silmemize yariyor.*/
-    public void delete(doctor doctor) {
-        
+    @Override
+    public void delete(Object obj) {
+        doctor doctor = (doctor)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("delete from doctor where id = " + doctor.getId());
@@ -90,8 +86,9 @@ public class DoctorDao {
 
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir hasta
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
-    public void update(doctor doctor, int selectedHospital) {
-        
+    @Override
+    public void update(Object obj, int selectedHospital) {
+        doctor doctor = (doctor)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("update doctor set name = '" + doctor.getName() + "', surname = '" + doctor.getSurname()+ "', branch = '" + doctor.getBranch() + "', hospital = " + selectedHospital + " where id=" + doctor.getId());
@@ -101,25 +98,12 @@ public class DoctorDao {
         }
     }
 
-    public DBConnection getDb() {
-        //nesnemizin null gelme olasiligini ortadan kaldirmak amaciyla kontrol gerceklestiriyoruz
-        if(this.db == null)
-            this.db = new DBConnection();
-        return db;
-    }
-
-    public Connection getC() {
-        //nesnemizin null gelme olasiligini ortadan kaldirmak amaciyla kontrol gerceklestiriyoruz
-        if(this.c == null)
-            this.c = this.getDb().connect();
-        return c;
-    }
-
     public HospitalDao gethDao() {
         //nesnemizin null gelme olasiligini ortadan kaldirmak amaciyla kontrol gerceklestiriyoruz
         if(this.hDao == null)
             this.hDao = new HospitalDao();
         return hDao;
     }
+
     
 }
