@@ -23,7 +23,7 @@ public class MedicineController extends Controller implements Serializable{
     
     @Override
     public void update(){
-        this.getMedicineDao().update(this.getMedicine(),0);
+        this.getMedicineDao().update(this.getMedicine());
         this.setMedicine(new medicine());
     }
     
@@ -47,7 +47,7 @@ public class MedicineController extends Controller implements Serializable{
     
     @Override
     public void create(){
-        this.getMedicineDao().insert(this.getMedicine(),0);
+        this.getMedicineDao().insert(this.getMedicine());
         this.setMedicine(new medicine());
     }
 }

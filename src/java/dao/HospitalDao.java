@@ -54,7 +54,7 @@ public class HospitalDao extends dao{
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
     @Override
-    public void insert(Object obj, int selected) {
+    public void insert(Object obj) {
         hospital hospital = (hospital)obj;
         try{
             Statement st = this.getC().createStatement();
@@ -82,7 +82,7 @@ public class HospitalDao extends dao{
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir hastane
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
     @Override
-    public void update(Object obj, int selected) {
+    public void update(Object obj) {
         hospital hospital = (hospital)obj;
         try{
             Statement st = this.getC().createStatement();

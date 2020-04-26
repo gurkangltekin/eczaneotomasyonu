@@ -16,12 +16,12 @@ import java.sql.Statement;
 public class MedicineDao extends dao{
         
         
-    public List<medicine> getRecipeMedicines(int recipeId){
+      public List<medicine> getRecipeMedicines(int recipeId){
         List<medicine> mList = new ArrayList<>();
         
         try{
             Statement st = this.getC().createStatement();
-            ResultSet rs = st.executeQuery("select * from recipe_medicine where sick = " + recipeId);
+            ResultSet rs = st.executeQuery("select * from recipe_medicine where recipe_id = " + recipeId);
             
             while(rs.next()){
                 mList.add(this.find(rs.getInt("medicine_id")));
@@ -63,9 +63,12 @@ public class MedicineDao extends dao{
         try{
             Statement st = this.getC().createStatement();
             ResultSet rs = st.executeQuery("select * from sick_medicine where sick = " + sickId);
-            
+            medicine m;
             while(rs.next()){
-                mList.add(this.find(rs.getInt("medicine_id")));
+                m = this.find(rs.getInt("medicine_id"));
+                m.setId(rs.getInt("id"));
+                m.setLast_update(rs.getDate("last_update"));
+                mList.add(m);
             }
             
         }catch(SQLException e){
@@ -100,7 +103,7 @@ public class MedicineDao extends dao{
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
     @Override
-    public void insert(Object obj, int selected) {
+    public void insert(Object obj) {
         medicine medicine = (medicine)obj;
         try{
             Statement st = this.getC().createStatement();
@@ -128,12 +131,21 @@ public class MedicineDao extends dao{
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir ilac
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
     @Override
-    public void update(Object obj, int selected) {
+    public void update(Object obj) {
         medicine medicine = (medicine)obj;
         try{
             Statement st = this.getC().createStatement();
             st.executeUpdate("update medicine set name = '" + medicine.getName() + "', exd = '" + medicine.getExd()+ "', stock = " + medicine.getStock() + " where id=" + medicine.getId());
             
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteSickMedicine(medicine medicine) {
+        try{
+            Statement st = this.getC().createStatement();
+            st.executeUpdate("delete from sick_medicine where id = " + medicine.getId());
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }

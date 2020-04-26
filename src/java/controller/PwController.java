@@ -23,7 +23,7 @@ public class PwController extends Controller implements Serializable {
     
     @Override
     public void update(){
-        this.getPwDao().update(this.getPw(),0);
+        this.getPwDao().update(this.getPw());
         this.setPw(new pw());
     }
     
@@ -47,7 +47,7 @@ public class PwController extends Controller implements Serializable {
     
     @Override
     public void create(){
-        this.getPwDao().insert(this.getPw(),0);
+        this.getPwDao().insert(this.getPw());
         this.setPw(new pw());
     }
 }

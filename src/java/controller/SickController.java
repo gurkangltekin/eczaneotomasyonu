@@ -25,6 +25,30 @@ public class SickController extends Controller implements Serializable {
         this.setSelectedItem1(0);
     }
     
+    public String detail(sick sick){
+        this.setSick(sick);
+        return "sick_detail";
+    }
+    
+    public void deleteConfirmMedicine(Object obj){
+        medicine medicine = (medicine)obj;
+        this.setMedicine(medicine);
+    }
+    
+    public void deleteSickMedicine(){
+        this.getMedicineDao().deleteSickMedicine(this.getMedicine());
+        this.getSick().setMedicines(this.getMedicineDao().getSickMedicines(this.getSick().getId()));
+    }
+    
+    public void deleteConfirmRecipe(Object obj){
+        recipe recipe = (recipe)obj;
+        this.setRecipe(recipe);
+    }
+    
+    public void deleteSickRecipe(){
+        this.getRecipeDao().delete(this.getRecipe());
+    }
+    
     @Override
     public void clearForm(){
         this.setSick(new sick());
@@ -32,7 +56,7 @@ public class SickController extends Controller implements Serializable {
     
     @Override
     public void update(){
-        this.getSickDao().update(this.getSick(),0);
+        this.getSickDao().update(this.getSick());
         this.setSick(new sick());
     }
     
@@ -56,7 +80,7 @@ public class SickController extends Controller implements Serializable {
     
     @Override
     public void create(){
-        this.getSickDao().insert(this.getSick(),0);
+        this.getSickDao().insert(this.getSick());
         this.setSick(new sick());
     }
 }

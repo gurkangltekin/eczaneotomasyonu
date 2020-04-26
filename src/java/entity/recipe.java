@@ -16,8 +16,8 @@ public class recipe {
     private int id;
     private Date date;
     private String diagnosis;
-    private sick sick;
-    private doctor doctor;
+    private int sick;
+    private int doctor;
     private Date last_update;
     private List<medicine> medicines;
 
@@ -28,7 +28,7 @@ public class recipe {
         return id;
     }
 
-    public recipe(int id, Date date, String diagnosis, sick sick, doctor doctor, Date last_update) {
+    public recipe(int id, Date date, String diagnosis, int sick, int doctor, Date last_update) {
         this.id = id;
         this.date = date;
         this.diagnosis = diagnosis;
@@ -57,19 +57,19 @@ public class recipe {
         this.diagnosis = diagnosis;
     }
 
-    public sick getSick() {
+    public int getSick() {
         return sick;
     }
 
-    public void setSick(sick sick) {
+    public void setSick(int sick) {
         this.sick = sick;
     }
 
-    public doctor getDoctor() {
+    public int getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(doctor doctor) {
+    public void setDoctor(int doctor) {
         this.doctor = doctor;
     }
 

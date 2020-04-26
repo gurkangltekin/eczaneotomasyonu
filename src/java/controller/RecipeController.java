@@ -2,6 +2,7 @@ package controller;
 
 import entity.*;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -16,20 +17,26 @@ import javax.inject.Named;
 @SessionScoped
 public class RecipeController extends Controller implements Serializable {
     
+    private List<medicine> medicines;
+    
     @Override
     public void clearForm(){
         this.setRecipe(new recipe());
+        this.setSelectedMedicines(null);
     }
     
     @Override
     public void update(){
-        this.getRecipeDao().update(this.getRecipe(),0);
+        this.getRecipeDao().update(this.getRecipe());
+        this.getRecipeDao().createRecipeMedicine(this.getSelectedMedicines(), this.getRecipe().getId(), this.getRecipe().getSick());
+        this.setSelectedMedicines(null);
         this.setRecipe(new recipe());
     }
     
     @Override
     public void updateForm(Object obj){
         recipe recipe = (recipe)obj;
+        this.setSelectedMedicines(this.getRecipeDao().getRecipeMedicines(recipe.getId()));
         this.setRecipe(recipe);
     }
     
@@ -47,7 +54,19 @@ public class RecipeController extends Controller implements Serializable {
     
     @Override
     public void create(){
-        this.getRecipeDao().insert(this.getRecipe(),0);
+        this.getRecipeDao().insert(this.getRecipe());
+        this.getRecipeDao().createRecipeMedicine(this.getSelectedMedicines(),0, this.getRecipe().getSick());
+        this.setSelectedMedicines(null);
         this.setRecipe(new recipe());
     }
+
+    public List<medicine> getMedicines() {
+        return medicines;
+    }
+
+    public void setMedicines(List<medicine> medicines) {
+        this.medicines = medicines;
+    }
+    
+    
 }

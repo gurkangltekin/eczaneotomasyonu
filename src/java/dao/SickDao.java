@@ -20,6 +20,15 @@ public class SickDao extends dao{
     
     public sick find(int id){
         sick s = null;
+        try{
+            Statement st = this.getC().createStatement();
+            ResultSet rs = st.executeQuery("select * from sick where id = " + id);
+            rs.next();
+            s = new sick(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getDate("last_update"));
+                
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
         
         return s;
     }
@@ -50,7 +59,7 @@ public class SickDao extends dao{
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
     @Override
-    public void insert(Object obj, int selectedHospital) {
+    public void insert(Object obj) {
         sick sick = (sick)obj;
         try{
             Statement st = this.getC().createStatement();
@@ -78,7 +87,7 @@ public class SickDao extends dao{
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir hasta
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
     @Override
-    public void update(Object obj, int selected) {
+    public void update(Object obj) {
         sick sick = (sick)obj;
         try{
             Statement st = this.getC().createStatement();

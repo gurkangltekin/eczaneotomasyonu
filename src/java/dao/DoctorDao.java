@@ -59,11 +59,11 @@ public class DoctorDao extends dao{
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
     @Override
-    public void insert(Object obj, int selectedHospital) {
+    public void insert(Object obj) {
         doctor doctor = (doctor)obj;
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("insert into doctor (name, surname, branch, hospital) values('" + doctor.getName() + "', '" + doctor.getSurname()+"', '" + doctor.getBranch() + "', " + selectedHospital + ")");
+            st.executeUpdate("insert into doctor (name, surname, branch, hospital) values('" + doctor.getName() + "', '" + doctor.getSurname()+"', '" + doctor.getBranch() + "', " + doctor.getHospital().getId() + ")");
             
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -87,11 +87,11 @@ public class DoctorDao extends dao{
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir hasta
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
     @Override
-    public void update(Object obj, int selectedHospital) {
+    public void update(Object obj) {
         doctor doctor = (doctor)obj;
         try{
             Statement st = this.getC().createStatement();
-            st.executeUpdate("update doctor set name = '" + doctor.getName() + "', surname = '" + doctor.getSurname()+ "', branch = '" + doctor.getBranch() + "', hospital = " + selectedHospital + " where id=" + doctor.getId());
+            st.executeUpdate("update doctor set name = '" + doctor.getName() + "', surname = '" + doctor.getSurname()+ "', branch = '" + doctor.getBranch() + "', hospital = " + doctor.getHospital().getId() + " where id=" + doctor.getId());
             
         }catch(SQLException e){
             System.out.println(e.getMessage());

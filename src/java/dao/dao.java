@@ -20,8 +20,8 @@ abstract public class dao {
     Connection c = db.connect();
     
     abstract void delete(Object obj);
-    abstract void insert(Object obj, int selected);
-    abstract void update(Object obj, int selected);
+    abstract void insert(Object obj);
+    abstract void update(Object obj);
     
     
     public DBConnection getDb() {

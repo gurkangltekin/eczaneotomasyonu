@@ -24,7 +24,7 @@ public class HospitalController extends Controller implements Serializable {
     
     @Override
     public void update(){
-        this.getHospitalDao().update(this.getHospital(),0);
+        this.getHospitalDao().update(this.getHospital());
         this.setHospital(new hospital());
     }
     
@@ -48,7 +48,7 @@ public class HospitalController extends Controller implements Serializable {
     
     @Override
     public void create(){
-        this.getHospitalDao().insert(this.getHospital(),0);
+        this.getHospitalDao().insert(this.getHospital());
         this.setHospital(new hospital());
     }
     

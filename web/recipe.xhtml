@@ -50,7 +50,7 @@
         <div class="container">
             <div class="row">
                 <!-- Recipe Table -->
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <h:form id="recipeTable">
                         <h:dataTable styleClass="table table-striped" value="#{recipeController.recipeList}" var="recipe">
                             <h:column>
@@ -61,7 +61,7 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Reçete Tarihi</f:facet>
-                                #{recipe.date}
+                                    #{recipe.date}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Reçete Teşhisi</f:facet>
@@ -69,17 +69,17 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Hasta Adı Soyadı</f:facet>
-                                    #{recipe.sick.name} #{recipe.sick.surname}
+                                    #{recipeController.sickDao.find(recipe.sick).name} #{recipeController.sickDao.find(recipe.sick).surname}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Doktor Adı Soyadı</f:facet>
-                                    #{recipe.doctor.name} #{recipe.doctor.surname}
+                                    #{recipeController.doctorDao.find(recipe.doctor).name} #{recipeController.doctorDao.find(recipe.doctor).surname}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Reçete İlaçları</f:facet>
                                 <ul>
-                                    <ui:repeat value="#{recipe.medicines}" var="medicines">
-                                        <li></li>
+                                    <ui:repeat value="#{recipe.medicines}" var="med">
+                                        <li>#{med.name}</li>
                                     </ui:repeat>
                                 </ul>
                             </h:column>
@@ -99,26 +99,37 @@
                 <!-- end Recipe Table -->
 
                 <!-- Recipe Form -->
-                <div class="col-md-3">
+                <div class="col-md-12">
                     <h:form id="recipeForm">
                         <div class="form-group">
-                            <h:inputHidden value="#{recipeController.recipe.id}" />
-                            <label for="inputDate">Reçete Tarhisi</label>
+                            <label for="inputDate">Reçete Tarihi</label>
                             <h:panelGrid>
                                 <h:inputText id="inputDate" styleClass="form-control" value="#{recipeController.recipe.date}">
-                                    <f:convertDateTime pattern="dd-M-yyyy" />
+                                    <f:convertDateTime pattern="d-M-yyyy" />
                                 </h:inputText>
                             </h:panelGrid>
+                        </div>
+                        <div class="form-group">
                             <label for="inputDiagnosis">Reçete Teşhisi</label>
                             <h:inputText id="inputDiagnosis" styleClass="form-control" value="#{recipeController.recipe.diagnosis}" />
+                        </div>
+                        <div class="form-group">
                             <label for="selectSick">Hasta</label>
-                            <h:selectOneMenu styleClass="custom-select" id="selectSick" value="#{recipeController.selectedItem1}">
+                            <h:selectOneMenu styleClass="custom-select" id="selectSick" value="#{recipeController.recipe.sick}">
                                 <f:selectItems value="#{recipeController.sickList}" var="sick" itemValue="#{sick.id}" itemLabel="#{sick.name} #{sick.surname}"/>
                             </h:selectOneMenu>
+                        </div>
+                        <div class="form-group">
                             <label for="selectDoctor">Doktor</label>
-                            <h:selectOneMenu styleClass="custom-select" id="selectDoctor" value="#{recipeController.selectedItem2}">
+                            <h:selectOneMenu styleClass="custom-select" id="selectDoctor" value="#{recipeController.recipe.doctor}">
                                 <f:selectItems value="#{recipeController.doctorList}" var="doctor" itemValue="#{doctor.id}" itemLabel="#{doctor.name} #{doctor.surname}"/>
                             </h:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectMedicine">İlaçlar</label>
+                            <h:selectManyMenu styleClass="custom-select" id="selectMedicine" style="height: 150px;" value="#{recipeController.selectedMedicines}">
+                                <f:selectItems value="#{recipeController.medicineList}" var="medicine" itemValue="#{medicine.id}" itemLabel="#{medicine.name}"/>
+                            </h:selectManyMenu>
                         </div>
                         <div class="form-group btn-group">
                             <h:commandButton rendered="#{recipeController.recipe.id != 0}" styleClass="btn btn-secondary" value="Güncelle" action="#{recipeController.update}">
@@ -151,9 +162,9 @@
                             <p>
                                 <b>Reçete ID : </b>#{recipeController.recipe.id} <br/>
                                 <b>Reçete Tarihi : </b>#{recipeController.recipe.date} <br/>
-                                <b>Reçete Teşhisi : </b>#{recipeController.recipe.sick}<br/>
-                                <b>Hasta Adı Soyadı : </b>#{recipeController.recipe.sick.name} #{recipeController.recipe.sick.surname}<br/>
-                                <b>Doktor Adı Soyadı Soyadı : </b>#{recipeController.recipe.doctor.name} #{recipeController.recipe.doctor.surname}<br/>
+                                <b>Reçete Teşhisi : </b>#{recipeController.recipe.diagnosis}<br/>
+                                <b>Hasta Adı Soyadı : </b>#{recipeController.sickDao.find(recipe.sick).name} #{recipeController.sickDao.find(recipe.sick).surname}<br/>
+                                <b>Doktor Adı Soyadı Soyadı : </b>#{recipeController.doctorDao.find(recipe.doctor).name} #{recipeController.doctorDao.find(recipe.doctor).surname}<br/>
                                 <b>Reçete Bilgi Güncellenme Zamanı : </b>#{recipeController.recipe.last_update} <br/>
                                 Bilgilerini silmek istediğinizden emin misiniz?
                             </p>

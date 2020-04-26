@@ -41,7 +41,7 @@ public class PwDAO extends dao{
     gerceklestirebilmemiz icin gerekli kod parcaciklarini barindiriyor.
     */
     @Override
-    public void insert(Object obj, int selected) {
+    public void insert(Object obj) {
         pw pw = (pw)obj;
         try{
             Statement st = this.getC().createStatement();
@@ -69,7 +69,7 @@ public class PwDAO extends dao{
     /*Bu metodumuz, tablomuzda yanlis girilen veya bilgisi degisen bir ecza deposu
     bilgisinin guncellenmesini gerceklestiren kod parcaciklarini barindiriyor.*/
     @Override
-    public void update(Object obj, int selected) {
+    public void update(Object obj) {
         pw pW = (pw)obj;
         try{
             Statement st = this.getC().createStatement();

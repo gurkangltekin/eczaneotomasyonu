@@ -24,7 +24,7 @@ public class DoctorController extends Controller implements Serializable {
     
     @Override
     public void update(){
-        this.getDoctorDao().update(this.getDoctor(), this.getSelectedItem1());
+        this.getDoctorDao().update(this.getDoctor());
         this.clearForm();
     }
     
@@ -49,7 +49,7 @@ public class DoctorController extends Controller implements Serializable {
     
     @Override
     public void create(){
-        this.getDoctorDao().insert(this.getDoctor(), this.getSelectedItem1());
+        this.getDoctorDao().insert(this.getDoctor());
         this.clearForm();
     }
 }
