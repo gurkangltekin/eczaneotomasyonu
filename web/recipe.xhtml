@@ -1,50 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Hasta</title>
-        <h:outputStylesheet library="css" name="bootstrap.css" />
-        <h:outputScript library="js" name="jquery-3.4.1.slim.min.js" />
-        <h:outputScript library="js" name="bootstrap.js" />
-    </h:head>
-    <h:body>
-        <!-- navbar -->
-        <div class="container">
-            <h:form>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <h:commandLink styleClass="navbar-brand" action="index" value="Eczane Otomasyonu" />
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <h:commandLink styleClass="nav-link" action="index" value="Anasayfa" />
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink styleClass="nav-link" action="pw" value="Ecza Deposu" />
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink styleClass="nav-link" action="hospital" value="Hastane" />
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink styleClass="nav-link" action="medicine" value="İlaçlar" />
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink styleClass="nav-link" action="sick" value="Hasta" />
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink styleClass="nav-link" action="doctor" value="Doktor" />
-                            </li>
-                            <li class="nav-item active">
-                                <h:commandLink styleClass="nav-link" action="recipe" value="Reçete" />
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </h:form>
-        </div>
-        <!-- end navbar -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/navbar.xhtml">
+
+    <ui:define name="title"> <title>Eczane Otomasyonu | Reçeteler</title> </ui:define>
+
+    <ui:define name="content">
 
         <!-- Recipe Table-Form -->
         <div class="container">
@@ -88,10 +52,11 @@
                                     #{recipe.last_update}
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Hastayı Sil</f:facet>
+                                <f:facet name="header">Hastayı Sil / Detay</f:facet>
                                 <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{recipeController.deleteConfirm(recipe)}" value="Sil">
                                     <f:ajax execute="@this" render="delete-modal delete-button" />
                                 </h:commandButton>
+                                <h:commandButton styleClass="btn btn-sm btn-dark" value="Detay" action="#{recipeController.detail(recipe)}"/>
                             </h:column>
                         </h:dataTable>
                     </h:form>
@@ -182,6 +147,6 @@
             </div>
             <!-- end Delete Confirm Modal -->
         </div>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 

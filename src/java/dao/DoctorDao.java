@@ -15,6 +15,7 @@ public class DoctorDao extends dao{
     
     HospitalDao hDao = new HospitalDao();
     
+    private static final int a = 0;
     
     public doctor find(int id){
         doctor d = null;

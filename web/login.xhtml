@@ -6,7 +6,16 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="/template/navbar.xhtml">
 
+    <ui:define name="title"> <title>Eczane Otomasyonu | Login</title> </ui:define>
+    
     <ui:define name="content">
-        Merhaba Dünya
+        <h1>Login</h1>
+        <h:form>
+            <label for="username">Username</label>
+            <h:inputText value="#{loginController.username}" id="username" />
+            <label for="password">Password</label>
+            <h:inputText value="#{loginController.password}" id="password" />
+            <h:commandButton action="#{loginController.login}" value="Login" />
+        </h:form>
     </ui:define>
 </ui:composition>

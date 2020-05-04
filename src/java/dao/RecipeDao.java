@@ -72,40 +72,43 @@ public class RecipeDao extends dao {
             Statement st = this.getC().createStatement();
 
             int size = selectedMedicines.size();
-            int check = 0;
+            int check = 0, i, j, size2;
             if (id == 0) {
-                for (int i = 0; i < size; i++) {
+                for (i = 0; i < size; i++) {
                     st.executeUpdate("insert into recipe_medicine (recipe_id, medicine_id) values (" + this.getLastRecipe() + ", " + selectedMedicines.get(i) + ")");
                     st.executeUpdate("insert into sick_medicine (sick, medicine_id) values (" + sickId + ", " + selectedMedicines.get(i) + ")");
                 }
             } else {
-                List<medicine> mList = new ArrayList();
-                List<Integer> rMedicineList = new ArrayList();
+                
+                List<Integer> mList = new ArrayList();
                 ResultSet rs = st.executeQuery("select * from recipe_medicine where recipe_id = " + id);
-            
+                
                 while(rs.next()){
-                    mList.add(this.getmDao().find(rs.getInt("medicine_id")));
+                    mList.add(rs.getInt("medicine_id"));
                 }
                 
-                int size2 = mList.size();
-                int j = 0;
-                int k = 0;
-                while (j < size2) {
-                    rMedicineList.add(mList.get(j++).getId());
-                }
-                for (int i = 0; i < size; i++) {
+                size2 = mList.size();
+                
+                for(i = 0 ; i < size ; i++){
                     j = 0;
-                    k = 0;
-                    while(j<size2){
-                        if(rMedicineList.get(j) == selectedMedicines.get(i)){
-                            k = 1;
+                    while(j < size2){
+                        if(mList.get(j) == selectedMedicines.get(i)){
+                            check = 1;
+                            System.out.println("deneme");
                         }
+                        j++;
                     }
-                    if(k != 1){
+                    if(check != 1){
                         st.executeUpdate("insert into recipe_medicine (recipe_id, medicine_id) values (" + id + ", " + selectedMedicines.get(i) + ")");
+                        st.executeUpdate("insert into sick_medicine (sick, medicine_id) values (" + sickId + ", " + selectedMedicines.get(i) + ")");
+                        System.out.println(selectedMedicines.get(i));
                     }
-
+                    if(check == 1){
+                        check = 0;
+                    }
                 }
+
+                
             }
 
         } catch (SQLException e) {

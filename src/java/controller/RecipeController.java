@@ -19,6 +19,15 @@ public class RecipeController extends Controller implements Serializable {
     
     private List<medicine> medicines;
     
+    public void deleteConfirmdetail(){
+        
+    }
+    
+    public String detail(recipe recipe){
+        this.setRecipe(recipe);
+        return "recipe_detail";
+    }
+    
     @Override
     public void clearForm(){
         this.setRecipe(new recipe());

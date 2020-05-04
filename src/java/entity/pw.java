@@ -67,4 +67,11 @@ public class pw {
     public void setLast_update(Date last_update) {
         this.last_update = last_update;
     }
+
+    @Override
+    public String toString() {
+        return "pw{" + "id=" + id + ", name=" + name + ", dept=" + dept + ", phone_number=" + phone_number + ", last_update=" + last_update + '}';
+    }
+    
+    
 }
