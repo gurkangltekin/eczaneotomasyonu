@@ -27,7 +27,7 @@ public class SickController extends Controller implements Serializable {
     
     public String detail(sick sick){
         this.setSick(sick);
-        return "sick_detail";
+        return "/secret/sick_detail";
     }
     
     public void deleteConfirmMedicine(Object obj){

@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.util.Objects;
+
 /**
  *
  * @author gurkangltekin
@@ -12,7 +14,7 @@ package entity;
 public class User {
     private String username;
     private String password;
-    private int auth;
+    private String auth;
 
     public String getUsername() {
         return username;
@@ -30,13 +32,40 @@ public class User {
         this.password = password;
     }
 
-    public int getAuth() {
+    public String getAuth() {
         return auth;
     }
 
-    public void setAuth(int auth) {
+    public void setAuth(String auth) {
         this.auth = auth;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.username);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
     @Override
     public String toString() {

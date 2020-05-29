@@ -60,6 +60,7 @@ abstract class Controller{
     private List<pw> pwList;
     private List<sick> sickList;
     private List<recipe> recipeList;
+    private List<User> userList;
     
     /*veritabani ile iletisim saglayabilmek adina her dao paketinin ayri birer
     nesnesini olusturmamiz gerekiyor.*/
@@ -69,6 +70,7 @@ abstract class Controller{
     private PwDAO pwDao;
     private SickDao sickDao;
     private RecipeDao recipeDao;
+    private UserDao userDao;
     
     /*icinde bulundugumuz varligi form uzerinden duzenleyebilmek veya yeni varligi
     form uzerinden alip veritabanina ekleyebilmek icin icin 1 adet tekil varlik
@@ -79,6 +81,7 @@ abstract class Controller{
     private sick sick;
     private pw pw;
     private recipe recipe;
+    private User user;
         
     /*selectedItem1 degiskeni, ilac satilacak olan hastanın belirlenmesi ve
     gerekli satis isleminin veritabanina dogru hasta is'si ile kayıt edilmesi icin
@@ -304,4 +307,35 @@ abstract class Controller{
     public void setSelectedItem2(int selectedItem2) {
         this.selectedItem2 = selectedItem2;
     }
+
+    public List<User> getUserList() {
+        this.userList = this.getUserDao().getUser();
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public UserDao getUserDao() {
+        if(this.userDao == null)
+            this.userDao = new UserDao();
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public User getUser() {
+        if(this.user == null)
+            this.user = new User();
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    
 }

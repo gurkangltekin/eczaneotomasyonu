@@ -20,34 +20,38 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author gurkangltekin
  */
-@WebFilter("/*")
-public class LoginFilter implements Filter{
+@WebFilter(urlPatterns = {"/*"})
+public class LoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        
+
         String url = req.getRequestURI();
-        User u = (User) req.getSession().getAttribute("eczaci");
-        
-        if(u == null){
-            if(url.contains("secret") || url.contains("logout")){
+        User ku = (User) req.getSession().getAttribute("eczaci");
+
+        if (ku == null) {
+
+            if (url.contains("secret") || url.contains("logout") || url.contains("register")) {
                 res.sendRedirect(req.getContextPath() + "/login.xhtml");
-            }else{
+            } else {
                 chain.doFilter(request, response);
             }
-        }else{
-            if(url.contains("register") || url.contains("login")){
-                res.sendRedirect(req.getContextPath() + "/secret/secret.xhtml");
-            }else if(url.contains("logout")){
+
+        } else {
+            if (url.contains("login")) {
+                res.sendRedirect(req.getContextPath() + "/secret/register.xhtml");
+            } else if (url.contains("logout")) {
                 req.getSession().invalidate();
                 res.sendRedirect(req.getContextPath() + "/index.xhtml");
-            }else{
+            } else {
                 chain.doFilter(request, response);
             }
         }
-        
+
     }
-    
+
 }
+

@@ -7,15 +7,33 @@
                 template="/template/navbar.xhtml">
 
     <ui:define name="title"> <title>Eczane Otomasyonu | Login</title> </ui:define>
-    
+
     <ui:define name="content">
-        <h1>Login</h1>
-        <h:form>
-            <label for="username">Username</label>
-            <h:inputText value="#{loginController.username}" id="username" />
-            <label for="password">Password</label>
-            <h:inputText value="#{loginController.password}" id="password" />
-            <h:commandButton action="#{loginController.login}" value="Login" />
-        </h:form>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <h:form id="userLogin" styleClass="form-signin text-center">
+                        <h:outputText value="Giriş Yap" style="font-size:30px"/>
+                        <br/>
+                        <div class="form-group">
+                            <h:outputText value="Kullanıcı adı"/>
+                            <h:inputText id="inputUsername" styleClass="form-control" value="#{loginController.user.username}" />
+                            <h:message for="inputUsername" style="color: red;"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" styleClass="sr-only">Parola</label>
+                            <h:inputSecret id="inputPassword" styleClass="form-control" value="#{loginController.user.password}" />
+                            <h:message for="inputPassword" style="color: red;"/>
+                        </div>
+                        <div class="btn-group form-signin">
+                            <h:commandButton styleClass="btn btn-lg btn-primary btn-block" action="#{loginController.login}" value="Giriş"/>
+                        </div>
+                    </h:form>
+                    <div class="text-center">
+                        <h:message for="userLogin" style="color: red;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>

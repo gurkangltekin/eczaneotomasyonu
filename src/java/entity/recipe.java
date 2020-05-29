@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,6 +83,9 @@ public class recipe {
     }
 
     public List<medicine> getMedicines() {
+        if(this.medicines == null){
+            this.medicines = new ArrayList();
+        }
         return medicines;
     }
 

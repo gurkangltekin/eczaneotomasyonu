@@ -25,7 +25,7 @@ public class RecipeController extends Controller implements Serializable {
     
     public String detail(recipe recipe){
         this.setRecipe(recipe);
-        return "recipe_detail";
+        return "/secret/recipe_detail";
     }
     
     @Override

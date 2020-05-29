@@ -7,6 +7,20 @@
                 template="/template/navbar.xhtml">
 
     <ui:define name="content">
-        Merhaba Dünya
+        <div class="row"  style="margin-top:100px; padding-bottom: 50px; padding-top: 50px; background-color:yellow;">
+            <div class="col-md-12">
+                <div class="container form-signing text-center">
+                    <h:panelGroup rendered="#{sessionScope.eczaci.username != null ? sessionScope.eczaci.auth == 'eczaci' ? true : false : false}">
+                        <label>Sayin Eczacı "#{sessionScope.eczaci.username}" Eczane Otomasyonu Yönetim Paneline Hosgeldiniz...</label>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{sessionScope.eczaci.username != null ? sessionScope.eczaci.auth == 'kalfa' ? true : false : false}">
+                        <label>Sayin Kalfa "#{sessionScope.eczaci.username}" Eczane Otomasyonu Yönetim Paneline Hosgeldiniz...</label>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{sessionScope.eczaci.username == null }">
+                        <label>Eczane Otomasyonu Yönetim Paneline Hosgeldiniz... Lütfen Giriş Yapın!</label>
+                    </h:panelGroup>
+                </div>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>
